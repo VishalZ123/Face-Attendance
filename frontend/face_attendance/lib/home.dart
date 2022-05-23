@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-  
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
                         Navigator.pushNamed(context, '/login');
                       },
                       icon: const Icon(Icons.person),
-                      label: const Text('Login'),
+                      label: const Text('Log In'),
                     ),
                   ),
                 ),
@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
                         Navigator.pushNamed(context, '/signup');
                       },
                       icon: const Icon(Icons.person_add),
-                      label: const Text('Register'),
+                      label: const Text('Sign Up'),
                     ),
                   ),
                 ),

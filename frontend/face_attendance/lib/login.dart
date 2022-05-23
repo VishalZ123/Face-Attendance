@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -30,7 +33,7 @@ class LoginState extends State<Login> {
                     alignment: Alignment.center,
                     children: <Widget>[
                       Card(
-                        margin: const EdgeInsets.fromLTRB(10, 200, 10, 100),
+                        margin: const EdgeInsets.fromLTRB(10, 20, 10, 100),
                         elevation: 2.0,
                         color: Colors.grey[200],
                         shape: RoundedRectangleBorder(
@@ -42,7 +45,10 @@ class LoginState extends State<Login> {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
                                   controller: emailController,
                                   keyboardType: TextInputType.emailAddress,
@@ -70,7 +76,10 @@ class LoginState extends State<Login> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 0.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 0.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
                                   controller: passwordController,
                                   style: const TextStyle(
@@ -104,7 +113,7 @@ class LoginState extends State<Login> {
                                 margin: const EdgeInsets.only(top: 40.0),
                                 decoration: const BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(5.0)),
+                                      BorderRadius.all(Radius.circular(5.0)),
                                 ),
                                 child: ElevatedButton(
                                   child: const Padding(
@@ -119,7 +128,9 @@ class LoginState extends State<Login> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    login(emailController.text,
+                                        passwordController.text);
+                                    Navigator.pushNamed(context, '/user');
                                   },
                                 ),
                               )
@@ -135,4 +146,28 @@ class LoginState extends State<Login> {
           ),
         ));
   }
+}
+
+String url = 'http://172.31.54.122:8000/login/';
+var response;
+Future login(email, password) async{
+  try{
+    response = await http.get(Uri.parse(url), headers: {
+      "email": email,
+      "password": password,
+    });
+    print(response.body);
+    Map<String, dynamic> data = jsonDecode(response.body);
+    String token = data["token"];
+    saveToken(token);
+    print(token);
+  } catch(e){
+    print(e);
+  }
+}
+
+saveToken(token) async{
+ SharedPreferences savedtoken = await SharedPreferences.getInstance();
+ savedtoken.setString("Token",token);
+ print('token saved');
 }

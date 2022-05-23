@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-//Widget for input
-String toString(bool b) {
-  return b ? "true" : "false";
-}
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
   @override
@@ -16,18 +14,18 @@ class SignUpState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =  TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   List<bool> isSelected = [false, false];
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        backgroundColor: Colors.blue,
-        elevation: 0,
-      ),
+        appBar: AppBar(
+          title: const Text('Sign Up'),
+          backgroundColor: Colors.blue,
+          elevation: 0,
+        ),
         body: SafeArea(
           child: Center(
             child: Container(
@@ -49,7 +47,10 @@ class SignUpState extends State<Signup> {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
                                   controller: nameController,
                                   keyboardType: TextInputType.name,
@@ -77,7 +78,10 @@ class SignUpState extends State<Signup> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
                                   controller: emailController,
                                   keyboardType: TextInputType.emailAddress,
@@ -105,11 +109,16 @@ class SignUpState extends State<Signup> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: ToggleButtons(
                                   onPressed: (int index) {
                                     setState(() {
-                                      for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                                      for (int buttonIndex = 0;
+                                          buttonIndex < isSelected.length;
+                                          buttonIndex++) {
                                         if (buttonIndex == index) {
                                           isSelected[buttonIndex] = true;
                                         } else {
@@ -127,32 +136,41 @@ class SignUpState extends State<Signup> {
                                     // SizedBox(height: 5.0,),
                                     Padding(
                                         padding: EdgeInsets.only(
-                                            top: 5.0, bottom: 5.0, left: 25.0, right: 25.0),
-                                        child: Text("Teacher",
-                                            style: TextStyle(
-                                            fontFamily: "SignikaSemiBold",
-                                            color: Colors.black,
-                                            fontSize: 22.0),
-                                        )
-                                    ),
+                                            top: 5.0,
+                                            bottom: 5.0,
+                                            left: 25.0,
+                                            right: 25.0),
+                                        child: Text(
+                                          "Teacher",
+                                          style: TextStyle(
+                                              fontFamily: "SignikaSemiBold",
+                                              color: Colors.black,
+                                              fontSize: 22.0),
+                                        )),
                                     // Icon(Icons.call),
                                     // SizedBox(height: 5.0,),
                                     Padding(
                                         padding: EdgeInsets.only(
-                                            top: 5.0, bottom: 5.0, left: 25.0, right: 25.0),
-                                        child: Text("Student",
-                                        style: TextStyle(
-                                            fontFamily: "SignikaSemiBold",
-                                            color: Colors.black,
-                                            fontSize: 22.0),)
-                                    ),
+                                            top: 5.0,
+                                            bottom: 5.0,
+                                            left: 25.0,
+                                            right: 25.0),
+                                        child: Text(
+                                          "Student",
+                                          style: TextStyle(
+                                              fontFamily: "SignikaSemiBold",
+                                              color: Colors.black,
+                                              fontSize: 22.0),
+                                        )),
                                   ],
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 0.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 0.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
                                   controller: passwordController,
                                   style: const TextStyle(
@@ -179,9 +197,12 @@ class SignUpState extends State<Signup> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                    left: 25.0,
+                                    right: 25.0),
                                 child: TextField(
-                                  controller: passwordController,
+                                  controller: confirmPasswordController,
                                   style: const TextStyle(
                                       fontFamily: "SignikaSemiBold",
                                       fontSize: 16.0,
@@ -207,9 +228,9 @@ class SignUpState extends State<Signup> {
                               Container(
                                 margin: const EdgeInsets.only(top: 40.0),
                                 decoration: const BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0)),
-                                    ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                ),
                                 child: ElevatedButton(
                                   child: const Padding(
                                     padding: EdgeInsets.symmetric(
@@ -222,8 +243,54 @@ class SignUpState extends State<Signup> {
                                           fontSize: 22.0),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
+                                  onPressed: () async {
+                                    if (passwordController.text !=
+                                        confirmPasswordController.text) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                          'Passwords are not the same.',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ));
+                                    } else if (passwordController.text.length <
+                                        6) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                          'Password must be atleast 6 characters length.',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ));
+                                    } else {
+                                      signup(
+                                          nameController.text,
+                                          emailController.text,
+                                          passwordController.text,
+                                          isSelected[0],
+                                          isSelected[1],
+                                          context);
+                                      if (isSelected[0]) {
+                                        Navigator.pushNamed(context, '/login');
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                            'Sign Up Successful!\n Please Log In.',
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                        ));
+                                      } else {
+                                        Navigator.pushNamed(
+                                            context, '/submitface');
+                                      }
+                                    }
                                   },
                                 ),
                               )
@@ -238,5 +305,33 @@ class SignUpState extends State<Signup> {
             ),
           ),
         ));
+  }
+}
+
+String url = 'http://172.31.54.122:8000/signup/';
+var response;
+Future signup(username, email, password, teacher, student, context) async {
+  try {
+    response = await http.post(Uri.parse(url), body: {
+      "username": username,
+      "email": email,
+      "password": password,
+      "is_teacher": teacher.toString(),
+      "is_student": student.toString()
+    });
+    print(response.body);
+    // return response.toString();
+  } catch (e) {
+    print(e);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        e.toString(),
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+      ),
+    ));
+    throw '';
   }
 }

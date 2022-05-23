@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.face_attendance">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
         android:label="face_attendance"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'home.dart';
+import 'user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// void main() {
-//   runApp(const Loading());
-// }
+String token= loadToken();
+
+loadToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = (prefs.getString('Token')??'');
+  return token;
+}
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -22,7 +28,21 @@ class _LoadingState extends State<Loading> {
         () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const Home())));
   }
-
+  Function tempname(){
+    Future homeroute(){
+      return Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Home()));
+    }
+    Future userroute(){
+      return Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const User()));
+    }
+    if(token==''){
+      return homeroute;
+    }else{
+      return userroute;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
