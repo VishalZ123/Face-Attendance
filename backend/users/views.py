@@ -1,4 +1,3 @@
-import json
 from django.db import IntegrityError
 from django.forms import ValidationError
 from rest_framework.decorators import api_view, permission_classes
@@ -7,10 +6,9 @@ from .serializers import UserSerializer
 from .models import CustomUser
 
 from django.contrib.auth import authenticate, login
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
-from rest_framework.status import (HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK)
+from rest_framework.status import HTTP_200_OK
 
 
 @api_view(['POST'])
