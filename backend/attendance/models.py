@@ -4,8 +4,8 @@ from users.models import CustomUser
 # Create your models here.
 
 class AttendanceManager(models.Manager):
-    def create_attendance(self, student, time, is_present):
-        attendance = self.create(student=student, time=time, is_present=is_present)
+    def create_attendance(self, student, dateTime, is_present):
+        attendance = self.create(student=student, dateTime=dateTime, is_present=is_present)
         return attendance
 
 class FaceManager(models.Manager):
@@ -15,7 +15,7 @@ class FaceManager(models.Manager):
 
 class Attendance(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    time = models.DateField(auto_now_add=True)
+    dateTime = models.DateTimeField()
     is_present = models.BooleanField(default=False)
     objects = AttendanceManager()
 
