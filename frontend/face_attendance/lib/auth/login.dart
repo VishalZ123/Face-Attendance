@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import '../token_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -38,6 +41,7 @@ class LoginState extends State<Login> {
                         color: Colors.grey[200],
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0)),
+                        // ignore: sized_box_for_whitespace
                         child: Container(
                           width: 360.00,
                           height: 300.00,
@@ -127,10 +131,42 @@ class LoginState extends State<Login> {
                                           fontSize: 22.0),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    login(emailController.text,
-                                        passwordController.text);
-                                    Navigator.pushNamed(context, '/user');
+                                  onPressed: () async {
+                                    String role = await login(
+                                        emailController.text,
+                                        passwordController.text,
+                                        context);
+                                    if (role == 'Student') {
+                                      Navigator.pushNamed(context, '/student');
+                                    } else if (role == 'Teacher') {
+                                      Navigator.pushNamed(context, '/teacher');
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: AlertDialog(
+                                                title: const Text("Error",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    )),
+                                                content: const Text(
+                                                    "Invalid email or password"),
+                                                actions: <Widget>[
+                                                  ElevatedButton(
+                                                    child: const Text("Close"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                    }
                                   },
                                 ),
                               )
@@ -148,26 +184,48 @@ class LoginState extends State<Login> {
   }
 }
 
-String url = 'http://172.31.54.122:8000/login/';
+String url = 'http://172.31.54.122:8000/users/login/';
+// ignore: prefer_typing_uninitialized_variables
 var response;
-Future login(email, password) async{
-  try{
+Future login(email, password, context) async {
+  try {
     response = await http.get(Uri.parse(url), headers: {
       "email": email,
       "password": password,
     });
-    print(response.body);
     Map<String, dynamic> data = jsonDecode(response.body);
-    String token = data["token"];
-    saveToken(token);
-    print(token);
-  } catch(e){
-    print(e);
-  }
-}
+    const storage = FlutterSecureStorage();
+    if (response.statusCode == 200) {
+      String token = data["token"];
+      // TokenStorage.writeToken('token', token);
+      storage.write(key: 'token', value: token);
 
-saveToken(token) async{
- SharedPreferences savedtoken = await SharedPreferences.getInstance();
- savedtoken.setString("Token",token);
- print('token saved');
+      String role = data["role"];
+      // TokenStorage.writeToken('role', role);
+      storage.write(key: 'role', value: role);
+
+      String username = data["username"];
+      // TokenStorage.writeToken('username', username);
+      storage.write(key: 'username', value: username);
+
+      String email = data["data"]["email"];
+      // TokenStorage.writeToken('email', email);
+      storage.write(key: 'email', value: email);
+
+      return role;
+    } else {
+      return 'error';
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        'Something went wrong, Try logging in again',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+      ),
+    ));
+    return 'error';
+  }
 }

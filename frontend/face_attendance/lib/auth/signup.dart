@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../token_storage.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -114,6 +118,8 @@ class SignUpState extends State<Signup> {
                                     left: 25.0,
                                     right: 25.0),
                                 child: ToggleButtons(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  fillColor: Colors.blue,
                                   onPressed: (int index) {
                                     setState(() {
                                       for (int buttonIndex = 0;
@@ -126,14 +132,9 @@ class SignUpState extends State<Signup> {
                                         }
                                       }
                                     });
-                                    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    //   content: Text('${toString(isSelected[0])} ${toString(isSelected[1])}'),
-                                    // ));
                                   },
                                   isSelected: isSelected,
                                   children: const <Widget>[
-                                    // Icon(Icons.ac_unit),
-                                    // SizedBox(height: 5.0,),
                                     Padding(
                                         padding: EdgeInsets.only(
                                             top: 5.0,
@@ -147,8 +148,6 @@ class SignUpState extends State<Signup> {
                                               color: Colors.black,
                                               fontSize: 22.0),
                                         )),
-                                    // Icon(Icons.call),
-                                    // SizedBox(height: 5.0,),
                                     Padding(
                                         padding: EdgeInsets.only(
                                             top: 5.0,
@@ -269,26 +268,37 @@ class SignUpState extends State<Signup> {
                                         ),
                                       ));
                                     } else {
-                                      signup(
+                                      var statusOK = await signup(
                                           nameController.text,
                                           emailController.text,
                                           passwordController.text,
                                           isSelected[0],
                                           isSelected[1],
                                           context);
-                                      if (isSelected[0]) {
-                                        Navigator.pushNamed(context, '/login');
+                                      if (statusOK) {
+                                        if (isSelected[0]) {
+                                          Navigator.pushNamed(
+                                              context, '/login');
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text(
+                                              'Sign Up Successful!\n Please Log In.',
+                                              style: TextStyle(
+                                                  color: Colors.green),
+                                            ),
+                                          ));
+                                        } else {
+                                          Navigator.pushNamed(
+                                              context, '/submitface');
+                                        }
+                                      } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                           content: Text(
-                                            'Sign Up Successful!\n Please Log In.',
-                                            style:
-                                                TextStyle(color: Colors.green),
+                                            'Sign Up Failed!\n Please try again.',
+                                            style: TextStyle(color: Colors.red),
                                           ),
                                         ));
-                                      } else {
-                                        Navigator.pushNamed(
-                                            context, '/submitface');
                                       }
                                     }
                                   },
@@ -308,7 +318,8 @@ class SignUpState extends State<Signup> {
   }
 }
 
-String url = 'http://172.31.54.122:8000/signup/';
+String url = 'http://172.31.54.122:8000/users/signup/';
+// ignore: prefer_typing_uninitialized_variables
 var response;
 Future signup(username, email, password, teacher, student, context) async {
   try {
@@ -319,19 +330,30 @@ Future signup(username, email, password, teacher, student, context) async {
       "is_teacher": teacher.toString(),
       "is_student": student.toString()
     });
-    print(response.body);
-    // return response.toString();
+    Map<String, dynamic> data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      String token = data["token"];
+      TokenStorage.writeToken('token', token);
+      return true;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          data['message'],
+          style: const TextStyle(color: Colors.red),
+        ),
+      ));
+      return false;
+    }
   } catch (e) {
-    print(e);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
-        e.toString(),
-        style: const TextStyle(
+        "Existing Username or Email.",
+        style: TextStyle(
           color: Colors.red,
           fontSize: 16,
         ),
       ),
     ));
-    throw '';
+    return false;
   }
 }

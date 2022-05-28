@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   static const String _title = 'Face Attendance';
 
   @override
+  HomeState createState() {
+    return HomeState();
+  }
+}
+
+class HomeState extends State<Home> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: _title,
+      title: Home._title,
       home: Scaffold(
-        // appBar: AppBar(
-        //   title: const Text(_title),
-        //   backgroundColor: Colors.blue,
-        //   elevation: 0,
-        // ),
         body: SafeArea(
           child: Column(
             children: [
