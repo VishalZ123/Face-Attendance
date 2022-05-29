@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'home.dart';
 
+// simulate loading for the splash screen
+// for the purpose of advertisement
+
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
 
@@ -15,7 +18,7 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
     Timer(
-        const Duration(seconds: 3),
+        const Duration(seconds: 3), // wait for 3 seconds
         () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const Home())));
   }

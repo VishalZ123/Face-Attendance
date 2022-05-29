@@ -24,7 +24,7 @@ class _ProfileState extends State<Profile> {
       });
     });
   }
-
+  // profile pafe t o show name, role and email
   @override
   Widget build(BuildContext context) {
     return Scaffold(

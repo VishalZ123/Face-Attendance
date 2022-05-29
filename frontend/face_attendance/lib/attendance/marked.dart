@@ -19,7 +19,7 @@ class Marked extends StatefulWidget {
 
 class _MarkedState extends State<Marked> {
   @override
-  void initState() {
+  void initState() { // get the date and student whose attendance is to marked
     super.initState();
     var now = DateTime.now();
     var formatter = DateFormat('dd-MM-yyyy');
@@ -34,7 +34,7 @@ class _MarkedState extends State<Marked> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Image(
-                image: AssetImage('assets/marked.gif'), fit: BoxFit.cover),
+                image: AssetImage('assets/marked.gif'), fit: BoxFit.cover), // tick mark sprite
             const SizedBox(height: 20),
             const Text(
               'Attendance Marked',
@@ -63,7 +63,7 @@ class _MarkedState extends State<Marked> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/teacher', (Route<dynamic> route) => false);
+                    '/teacher', (Route<dynamic> route) => false); // return to teacher dashboard
               },
               child: const Text('OK'),
             ),

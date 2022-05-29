@@ -10,11 +10,11 @@ import 'dashboard/student.dart';
 import 'dashboard/teacher.dart';
 
 void main() async {
+  // get all the cameras and open front camera
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final frontCamera = cameras.last;
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
     initialRoute: '/',
     routes: {
       '/': (context) => const Loading(),
@@ -23,7 +23,7 @@ void main() async {
       '/signup': (context) => const Signup(),
       '/submitface': (context) => TakePictureScreen(
             camera: frontCamera,
-            link:'http://IP_ADDRESS:8000/attendance/submit-face/',
+            link: 'http://IP_ADDRESS:8000/attendance/submit-face/',
           ),
       '/student': (context) => const StudentDashBoard(),
       '/teacher': (context) => const TeacherDashBoard(),

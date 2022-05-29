@@ -175,15 +175,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     String message = await response.stream.bytesToString();
     var jsonResponse = json.decode(message);
     if (response.statusCode == 200) {
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   content: Text(
-      //     jsonResponse['message'] + ' for ' + jsonResponse['user'],
-      //     style: const TextStyle(
-      //       color: Colors.green,
-      //       fontSize: 16,
-      //     ),
-      //   ),
-      // ));
       return [200, jsonResponse['user']];
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

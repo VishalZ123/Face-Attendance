@@ -19,7 +19,7 @@ class SignUpState extends State<Signup> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  List<bool> isSelected = [false, false];
+  List<bool> isSelected = [false, false]; // for radio button
   bool visibility1 = true;
   bool visibility2 = true;
 
@@ -308,8 +308,8 @@ class SignUpState extends State<Signup> {
                                           isSelected[0],
                                           isSelected[1],
                                           context);
-                                      if (statusOK) {
-                                        if (isSelected[0]) {
+                                      if (statusOK) { // if signup is successful
+                                        if (isSelected[0]) { // if teacher
                                           Navigator.pushNamed(
                                               context, '/login');
                                           ScaffoldMessenger.of(context)
@@ -320,11 +320,12 @@ class SignUpState extends State<Signup> {
                                                   color: Colors.green),
                                             ),
                                           ));
-                                        } else {
+                                        } else { // if student, need to submit photo of face
                                           Navigator.pushNamed(
                                               context, '/submitface');
                                         }
                                       } else {
+                                        // if signup is unsuccessful
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                           content: Text(
@@ -356,20 +357,20 @@ String url = 'http://IP_ADDRESS:8000/users/signup/';
 var response;
 Future signup(username, email, password, teacher, student, context) async {
   try {
-    response = await http.post(Uri.parse(url), body: {
+    response = await http.post(Uri.parse(url), body: { // send the collected data for creating a new user
       "username": username,
       "email": email,
       "password": password,
       "is_teacher": teacher.toString(),
       "is_student": student.toString()
     });
-    Map<String, dynamic> data = jsonDecode(response.body);
+    Map<String, dynamic> data = jsonDecode(response.body); // decode the response
     if (response.statusCode == 200) {
       String token = data["token"];
-      FlutterStorage.writeVal('token', token);
+      FlutterStorage.writeVal('token', token); // store the token in the flutter storage
       return true;
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar( // show the error message
         content: Text(
           data['message'],
           style: const TextStyle(color: Colors.red),
@@ -378,6 +379,7 @@ Future signup(username, email, password, teacher, student, context) async {
       return false;
     }
   } catch (e) {
+    // when the user uses an already registered email or username
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
         "Existing Username or Email.",

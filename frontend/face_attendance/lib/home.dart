@@ -23,7 +23,7 @@ class HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               const Image(
-                image: AssetImage('assets/home_bg.png'),
+                image: AssetImage('assets/home_bg.png'), // image
                 height: 300,
                 width: 200,
               ),
@@ -42,7 +42,7 @@ class HomeState extends State<Home> {
                     margin: const EdgeInsets.all(10),
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/login'); // login button
                       },
                       icon: const Icon(Icons.person),
                       label: const Text('Log In'),
@@ -54,7 +54,7 @@ class HomeState extends State<Home> {
                     margin: const EdgeInsets.all(10),
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
+                        Navigator.pushNamed(context, '/signup'); // signup button
                       },
                       icon: const Icon(Icons.person_add),
                       label: const Text('Sign Up'),
@@ -69,7 +69,7 @@ class HomeState extends State<Home> {
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
                 ),
-              ),
+              ), // footer
             ],
           ),
         ),

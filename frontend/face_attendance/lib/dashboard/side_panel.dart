@@ -16,7 +16,7 @@ class SidePanel extends StatefulWidget {
   @override
   State<SidePanel> createState() => _SidePanelState();
 }
-
+ // A side panel with profile and logout button
 class _SidePanelState extends State<SidePanel> {
   @override
   Widget build(BuildContext context) {
@@ -42,11 +42,11 @@ class _SidePanelState extends State<SidePanel> {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'SignikaSemiBold'),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 20), // username
                 Text(widget.username),
-                const SizedBox(height: 20),
+                const SizedBox(height: 20), // role
                 Text(widget.role),
-                const SizedBox(height: 20),
+                const SizedBox(height: 20), // email
                 Text(widget.email),
               ],
             ),
@@ -66,9 +66,9 @@ class _SidePanelState extends State<SidePanel> {
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Logout'),
             onTap: () => {
-              FlutterStorage.deleteAll(),
+              FlutterStorage.deleteAll(), // delete all the stored information about the user and logout
               Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/home', (Route<dynamic> route) => false)
+                  '/home', (Route<dynamic> route) => false) // return to home page
             },
           ),
         ],

@@ -23,7 +23,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   void initState() {
     super.initState();
-    FlutterStorage.readVal('token').then((value) {
+    FlutterStorage.readVal('token').then((value) { //read token from storage
       setState(() {
         token = value;
       });
@@ -68,9 +68,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
  
   upload(String path, String url, context) async {
     var uri = Uri.parse(url);
-    var request = http.MultipartRequest('POST', uri);
+    var request = http.MultipartRequest('POST', uri); // create multipart request
     request.headers['Token'] = token;
-    request.files.add(await http.MultipartFile.fromPath('image', path));
+    request.files.add(await http.MultipartFile.fromPath('image', path)); // send the captured image
     var response = await request.send();
  
     String message = await response.stream.bytesToString();

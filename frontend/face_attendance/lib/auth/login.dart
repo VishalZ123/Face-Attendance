@@ -16,8 +16,8 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool visibility = true;
-  toggle() {
+  bool visibility = true; // visibilty value for the password field
+  toggle() { // function to toggle the visibility of the password field
     setState(() {
       visibility = !visibility;
     });
@@ -111,7 +111,7 @@ class LoginState extends State<Login> {
                                         onTap: () {
                                           toggle();
                                         },
-                                        child: Icon(
+                                        child: Icon( // change the icon based on the visibility value
                                           visibility
                                               ? Icons.visibility
                                               : Icons.visibility_off,
@@ -150,9 +150,9 @@ class LoginState extends State<Login> {
                                         passwordController.text,
                                         context);
                                     if (role == 'Student') {
-                                      Navigator.pushNamed(context, '/student');
+                                      Navigator.pushNamed(context, '/student'); // redirect to teacher dashboard
                                     } else if (role == 'Teacher') {
-                                      Navigator.pushNamed(context, '/teacher');
+                                      Navigator.pushNamed(context, '/teacher'); // redirect to teacher dashboard
                                     } else {
                                       showDialog(
                                           context: context,
@@ -160,7 +160,7 @@ class LoginState extends State<Login> {
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: AlertDialog(
+                                              child: AlertDialog( // alert if the credentials are incorrect
                                                 title: const Text("Error",
                                                     style: TextStyle(
                                                       color: Colors.red,
@@ -202,26 +202,24 @@ String url = 'http://IP_ADDRESS:8000/users/login/';
 var response;
 Future login(email, password, context) async {
   try {
-    response = await http.get(Uri.parse(url), headers: {
+    response = await http.get(Uri.parse(url), headers: { // send a http request with email and password in headers
       "email": email,
       "password": password,
     });
-    Map<String, dynamic> data = jsonDecode(response.body);
+    Map<String, dynamic> data = jsonDecode(response.body); // decode the response
     if (response.statusCode == 200) {
+
+      // at the time of login store the token, role, username and email in flutter storage for future use
       String token = data["token"];
-      // storage.write(key: 'token', value: token);
       FlutterStorage.writeVal('token', token);
 
       String role = data["role"];
       FlutterStorage.writeVal('role', role);
-      // storage.write(key: 'role', value: role);
 
       String username = data["username"];
-      // storage.write(key: 'username', value: username);
       FlutterStorage.writeVal('username', username);
 
       String email = data["data"]["email"];
-      // storage.write(key: 'email', value: email);
       FlutterStorage.writeVal('email', email);
 
       return role;
@@ -229,6 +227,7 @@ Future login(email, password, context) async {
       return 'error';
     }
   } catch (e) {
+    // for unseen errors (should not occur according to the backend)
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
         'Something went wrong, Try logging in again',

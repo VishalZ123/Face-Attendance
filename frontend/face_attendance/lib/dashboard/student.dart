@@ -26,7 +26,8 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
       });
     });
   }
- 
+  // Student Dashboard
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +50,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                               username: username,
                             )));
               },
-              child: Card(
+              child: Card( // View Attendance by clicking on the card
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[

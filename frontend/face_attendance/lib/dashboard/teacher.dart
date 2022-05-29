@@ -52,9 +52,9 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CaptureFace(
+                    // Scan face to mark attendance
                     camera: frontCamera,
-                    link:
-                        'http://IP_ADDRESS:8000/attendance/mark-attendance/',
+                    link: 'http://IP_ADDRESS:8000/attendance/mark-attendance/',
                   ),
                 ),
               );
@@ -106,7 +106,8 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const [
-                              Text("View Attendance",
+                              Text(
+                                  "View Attendance", // View attendance of all students
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,

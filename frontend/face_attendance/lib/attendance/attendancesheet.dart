@@ -17,7 +17,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
   @override
   void initState() {
     super.initState();
-    fetchAttendance(widget.username).then((value) {
+    fetchAttendance(widget.username).then((value) { // get the attendance list
       setState(() {
         attendance = value;
       });
@@ -68,7 +68,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: ListView.builder(
+                child: ListView.builder( // list of attendances
                   itemCount: attendance.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
@@ -114,12 +114,12 @@ Future fetchAttendance(String username) async {
   String url =
       'http://IP_ADDRESS:8000/attendance/get-attendance/';
   try {
-    var response = await http.post(Uri.parse(url), headers: {
+    var response = await http.post(Uri.parse(url), headers: { // send username to server
       'username': username,
     });
-    List<dynamic> attendance = json.decode(response.body);
+    List<dynamic> attendance = json.decode(response.body); // get the attendance list
     List<Map<String, String>> datelist = [];
-    for (var i = 0; i < attendance.length; i++) {
+    for (var i = 0; i < attendance.length; i++) { // for each day, seperate the date and time to display separately
       DateTime dateTime = DateTime.parse(attendance[i]['dateTime']);
       String date = DateFormat('dd-MM-yyyy').format(dateTime);
       String time = DateFormat('hh:mm:ss').format(dateTime);
