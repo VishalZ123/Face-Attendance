@@ -13,10 +13,10 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 @api_view(['POST'])
 @permission_classes((AllowAny,))
-def create_user(request):
+def create_user(request): # Create a new user
   try:
         data = {}
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data) # Serialize the data
         if serializer.is_valid():
             if(CustomUser.objects.filter(username=serializer.validated_data['username']).exists()):
                 data['status'] = 'failed'
@@ -29,9 +29,11 @@ def create_user(request):
             data["email"] = account.email
             data["username"] = account.username
             data["token"] = token
+            # Save the user and return the above info as response
             return Response(data, status=HTTP_200_OK)
         else:
             data = serializer.errors
+            # return error message
             return Response(data, status=HTTP_400_BAD_REQUEST)
   except IntegrityError as e:
         account=CustomUser.objects.get(username='')
@@ -42,16 +44,18 @@ def create_user(request):
 @permission_classes((AllowAny,))
 def get_user(request):
   data = {}
+  # get the email and password from the request
   email1 = request.headers.get('Email')
   password = request.headers.get('Password')
   try:
-    Account = CustomUser.objects.get(email=email1)
+    Account = CustomUser.objects.get(email=email1) # get the account with the given email
   except BaseException as e:
       return Response({"message": "No such email registered!!"}, status=HTTP_400_BAD_REQUEST)
 
-  if (password!=Account.password):
+  if (password!=Account.password): # compare the passwords
       return Response({"message": "Incorrect Login credentials"}, status=HTTP_400_BAD_REQUEST)
 
+  # if the credentials are correct, return the token , role and username
   if Account:
     login(request, Account)
     data["message"] = "User logged in"

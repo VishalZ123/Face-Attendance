@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
    
-class CustomUserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager): # CustomUserManager
     def create_user(self, username, email, password, is_teacher, is_student):
         if not email:
             raise ValueError("Users must have an email address")
@@ -31,7 +31,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user 
         
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser):  # A custom user model for users to be classied as teachers and students
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
     username = models.CharField(max_length=50, unique=True)
