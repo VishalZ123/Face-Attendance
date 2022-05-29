@@ -16,7 +16,7 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool visibility = false;
+  bool visibility = true;
   toggle() {
     setState(() {
       visibility = !visibility;

@@ -31,6 +31,7 @@ class SignUpState extends State<Signup> {
           backgroundColor: Colors.blue,
           elevation: 0,
         ),
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Center(
             child: Container(

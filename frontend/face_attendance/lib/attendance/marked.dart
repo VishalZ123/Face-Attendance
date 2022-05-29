@@ -29,7 +29,7 @@ class _MarkedState extends State<Marked> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -49,7 +49,7 @@ class _MarkedState extends State<Marked> {
               style: const TextStyle(
                   fontFamily: 'SignikaSemiBold',
                   fontSize: 20,
-                  color: Colors.black),
+                  color: Colors.white),
             ),
             const SizedBox(height: 20),
             Text(
@@ -57,7 +57,7 @@ class _MarkedState extends State<Marked> {
               style: const TextStyle(
                   fontFamily: 'SignikaSemiBold',
                   fontSize: 20,
-                  color: Colors.black),
+                  color: Colors.white),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

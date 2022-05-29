@@ -1,6 +1,8 @@
+import 'package:face_attendance/dashboard/profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../storage.dart';
- 
+
 class SidePanel extends StatefulWidget {
   final String username;
   final String role;
@@ -10,11 +12,11 @@ class SidePanel extends StatefulWidget {
       required this.username,
       required this.role,
       required this.email});
- 
+
   @override
   State<SidePanel> createState() => _SidePanelState();
 }
- 
+
 class _SidePanelState extends State<SidePanel> {
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,17 @@ class _SidePanelState extends State<SidePanel> {
                 Text(widget.email),
               ],
             ),
+          ),
+          ListTile(
+            leading: const Icon(CupertinoIcons.person_solid),
+            title: const Text('Profile'),
+            onTap: () => {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Profile(),
+                  ))
+            },
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
