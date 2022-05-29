@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'side_panel.dart';
 import '../attendance/attendancesheet.dart';
-import '../token_storage.dart';
-
+import '../storage.dart';
+ 
 String username = '';
-
+String role = '';
+String email = '';
+ 
 class StudentDashBoard extends StatefulWidget {
   const StudentDashBoard({Key? key}) : super(key: key);
-
+ 
   @override
   State<StudentDashBoard> createState() => _StudentDashBoardState();
 }
-
+ 
 class _StudentDashBoardState extends State<StudentDashBoard> {
   @override
   void initState() {
     super.initState();
-    TokenStorage.readToken('username').then((value) {
-      if (value != null) {
-        username = value;
-      } else {
-        username = '';
-      }
+    FlutterStorage.readAll().then((value) {
+      setState(() {
+        username = value['username'];
+        email = value['email'];
+        role = value['role'];
+      });
     });
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const SidePanel(),
+        drawer: SidePanel(username: username, role: role, email: email),
         appBar: AppBar(
           title: const Text('Student Dashboard'),
           backgroundColor: Colors.blue,

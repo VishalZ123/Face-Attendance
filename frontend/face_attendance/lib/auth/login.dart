@@ -3,8 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../token_storage.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../storage.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -17,6 +16,12 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool visibility = false;
+  toggle() {
+    setState(() {
+      visibility = !visibility;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,28 +90,36 @@ class LoginState extends State<Login> {
                                     left: 25.0,
                                     right: 25.0),
                                 child: TextField(
+                                  obscureText: visibility,
                                   controller: passwordController,
                                   style: const TextStyle(
                                       fontFamily: "SignikaSemiBold",
                                       fontSize: 16.0,
                                       color: Colors.black),
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.lock,
                                         color: Colors.black,
                                         size: 22.0,
                                       ),
                                       hintText: "Enter password",
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                           fontFamily: "SignikaSemiBold",
-                                          fontSize: 18.0)),
+                                          fontSize: 18.0),
+                                      suffixIcon: GestureDetector(
+                                        onTap: () {
+                                          toggle();
+                                        },
+                                        child: Icon(
+                                          visibility
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          size: 20.0,
+                                          color: Colors.black,
+                                        ),
+                                      )),
                                 ),
-                              ),
-                              Container(
-                                width: 250.0,
-                                height: 1.0,
-                                color: Colors.grey,
                               ),
                               Container(
                                 width: 250.0,
@@ -194,23 +207,22 @@ Future login(email, password, context) async {
       "password": password,
     });
     Map<String, dynamic> data = jsonDecode(response.body);
-    const storage = FlutterSecureStorage();
     if (response.statusCode == 200) {
       String token = data["token"];
-      // TokenStorage.writeToken('token', token);
-      storage.write(key: 'token', value: token);
+      // storage.write(key: 'token', value: token);
+      FlutterStorage.writeVal('token', token);
 
       String role = data["role"];
-      // TokenStorage.writeToken('role', role);
-      storage.write(key: 'role', value: role);
+      FlutterStorage.writeVal('role', role);
+      // storage.write(key: 'role', value: role);
 
       String username = data["username"];
-      // TokenStorage.writeToken('username', username);
-      storage.write(key: 'username', value: username);
+      // storage.write(key: 'username', value: username);
+      FlutterStorage.writeVal('username', username);
 
       String email = data["data"]["email"];
-      // TokenStorage.writeToken('email', email);
-      storage.write(key: 'email', value: email);
+      // storage.write(key: 'email', value: email);
+      FlutterStorage.writeVal('email', email);
 
       return role;
     } else {

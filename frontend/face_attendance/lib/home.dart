@@ -19,6 +19,7 @@ class HomeState extends State<Home> {
       home: Scaffold(
         body: SafeArea(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               const Image(
                 image: AssetImage('assets/home_bg.png'),
@@ -34,7 +35,6 @@ class HomeState extends State<Home> {
                   letterSpacing: 2,
                 ),
               ),
-              const SizedBox(height: 100),
               Row(children: [
                 Expanded(
                   child: Container(
@@ -61,6 +61,14 @@ class HomeState extends State<Home> {
                   ),
                 ),
               ]),
+              const Text(
+                'Made with ❤️ by Vishal',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
         ),

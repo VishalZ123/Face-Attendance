@@ -1,38 +1,35 @@
 // ignore_for_file: use_build_context_synchronously
-
+ 
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
-const storage = FlutterSecureStorage();
+import '../storage.dart';
+ 
 String token = '';
-
+ 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
   final String link;
-
-  const DisplayPictureScreen({super.key, required this.imagePath, required this.link});
-
+ 
+  const DisplayPictureScreen(
+      {super.key, required this.imagePath, required this.link});
+ 
   @override
   State<DisplayPictureScreen> createState() => _DisplayPictureScreenState();
 }
-
+ 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   void initState() {
     super.initState();
-    storage.read(key: 'token').then((value) {
-      if (value != null) {
+    FlutterStorage.readVal('token').then((value) {
+      setState(() {
         token = value;
-      } else {
-        token = '';
-      }
+      });
     });
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,10 +47,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               ),
               label: const Text('Submit Face'),
               onPressed: () async {
-                var statuscode = await upload(
-                    widget.imagePath,
-                    widget.link,
-                    context);
+                var statuscode =
+                    await upload(widget.imagePath, widget.link, context);
                 if (statuscode == 200) {
                   Navigator.pushNamed(context, '/login');
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -70,14 +65,14 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       ),
     );
   }
-
+ 
   upload(String path, String url, context) async {
     var uri = Uri.parse(url);
     var request = http.MultipartRequest('POST', uri);
     request.headers['Token'] = token;
     request.files.add(await http.MultipartFile.fromPath('image', path));
     var response = await request.send();
-
+ 
     String message = await response.stream.bytesToString();
     var jsonResponse = json.decode(message);
     message = jsonResponse['message'];

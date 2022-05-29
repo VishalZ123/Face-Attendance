@@ -2,35 +2,37 @@ import 'package:flutter/material.dart';
 import 'side_panel.dart';
 import '../attendance/scan_face.dart';
 import 'package:camera/camera.dart';
-import '../token_storage.dart';
+import '../storage.dart';
 import 'student_list.dart';
-
+ 
 String username = '';
-
+String role = '';
+String email = '';
+ 
 class TeacherDashBoard extends StatefulWidget {
   const TeacherDashBoard({Key? key}) : super(key: key);
-
+ 
   @override
   State<TeacherDashBoard> createState() => _TeacherDashBoardState();
 }
-
+ 
 class _TeacherDashBoardState extends State<TeacherDashBoard> {
   @override
   void initState() {
     super.initState();
-    TokenStorage.readToken('username').then((value) {
-      if (value != null) {
-        username = value;
-      } else {
-        username = '';
-      }
+    FlutterStorage.readAll().then((value) {
+      setState(() {
+        username = value['username'];
+        email = value['email'];
+        role = value['role'];
+      });
     });
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const SidePanel(),
+      drawer: SidePanel(username: username, role: role, email: email),
       appBar: AppBar(
         title: const Text('Teacher Dashboard'),
         backgroundColor: Colors.blue,

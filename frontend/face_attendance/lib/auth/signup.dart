@@ -1,10 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../token_storage.dart';
+import '../storage.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -21,6 +20,8 @@ class SignUpState extends State<Signup> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   List<bool> isSelected = [false, false];
+  bool visibility1 = true;
+  bool visibility2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -171,22 +172,38 @@ class SignUpState extends State<Signup> {
                                     left: 25.0,
                                     right: 25.0),
                                 child: TextField(
+                                  obscureText: visibility1,
                                   controller: passwordController,
                                   style: const TextStyle(
                                       fontFamily: "SignikaSemiBold",
                                       fontSize: 16.0,
                                       color: Colors.black),
-                                  decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      icon: Icon(
-                                        Icons.lock,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    icon: const Icon(
+                                      Icons.lock,
+                                      color: Colors.black,
+                                      size: 22.0,
+                                    ),
+                                    hintText: "Enter password",
+                                    hintStyle: const TextStyle(
+                                        fontFamily: "SignikaSemiBold",
+                                        fontSize: 18.0),
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          visibility1 = !visibility1;
+                                        });
+                                      },
+                                      child: Icon(
+                                        visibility1
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
                                         color: Colors.black,
                                         size: 22.0,
                                       ),
-                                      hintText: "Enter password",
-                                      hintStyle: TextStyle(
-                                          fontFamily: "SignikaSemiBold",
-                                          fontSize: 18.0)),
+                                    ),
+                                  ),
                                 ),
                               ),
                               Container(
@@ -206,17 +223,31 @@ class SignUpState extends State<Signup> {
                                       fontFamily: "SignikaSemiBold",
                                       fontSize: 16.0,
                                       color: Colors.black),
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.password,
                                         color: Colors.black,
                                         size: 22.0,
                                       ),
                                       hintText: "Confirm password",
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                           fontFamily: "SignikaSemiBold",
-                                          fontSize: 18.0)),
+                                          fontSize: 18.0),
+                                      suffixIcon: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            visibility2 = !visibility2;
+                                          });
+                                        },
+                                        child: Icon(
+                                          visibility2
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Colors.black,
+                                          size: 22.0,
+                                        ),
+                                      )),
                                 ),
                               ),
                               Container(
@@ -333,7 +364,7 @@ Future signup(username, email, password, teacher, student, context) async {
     Map<String, dynamic> data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       String token = data["token"];
-      TokenStorage.writeToken('token', token);
+      FlutterStorage.writeVal('token', token);
       return true;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
