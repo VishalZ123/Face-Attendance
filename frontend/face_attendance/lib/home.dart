@@ -15,6 +15,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: Home._title,
       home: Scaffold(
         body: SafeArea(

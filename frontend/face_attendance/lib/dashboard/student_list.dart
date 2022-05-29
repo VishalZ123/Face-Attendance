@@ -76,7 +76,7 @@ class _StudentListState extends State<StudentList> {
     );
   }
 
-  String url = 'http://172.31.54.122:8000/attendance/get-students/';
+  String url = 'http://IP_ADDRESS:8000/attendance/get-students/';
   Future getStudents() async {
     try {
       var response = await http.get(Uri.parse(url));
@@ -88,7 +88,7 @@ class _StudentListState extends State<StudentList> {
       }
       return studentList;
     } catch (e) {
-      print(e);
+      throw '';
     }
   }
 }

@@ -23,7 +23,7 @@ void main() async {
       '/signup': (context) => const Signup(),
       '/submitface': (context) => TakePictureScreen(
             camera: frontCamera,
-            link:'http://172.31.54.122:8000/attendance/submit-face/',
+            link:'http://IP_ADDRESS:8000/attendance/submit-face/',
           ),
       '/student': (context) => const StudentDashBoard(),
       '/teacher': (context) => const TeacherDashBoard(),

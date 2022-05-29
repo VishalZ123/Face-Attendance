@@ -219,6 +219,7 @@ class SignUpState extends State<Signup> {
                                     left: 25.0,
                                     right: 25.0),
                                 child: TextField(
+                                  obscureText: visibility2,
                                   controller: confirmPasswordController,
                                   style: const TextStyle(
                                       fontFamily: "SignikaSemiBold",
@@ -350,7 +351,7 @@ class SignUpState extends State<Signup> {
   }
 }
 
-String url = 'http://172.31.54.122:8000/users/signup/';
+String url = 'http://IP_ADDRESS:8000/users/signup/';
 // ignore: prefer_typing_uninitialized_variables
 var response;
 Future signup(username, email, password, teacher, student, context) async {

@@ -111,7 +111,8 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
 }
 
 Future fetchAttendance(String username) async {
-  String url = 'http://172.31.54.122:8000/attendance/get-attendance/';
+  String url =
+      'http://IP_ADDRESS:8000/attendance/get-attendance/';
   try {
     var response = await http.post(Uri.parse(url), headers: {
       'username': username,

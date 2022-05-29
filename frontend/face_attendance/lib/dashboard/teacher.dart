@@ -4,18 +4,18 @@ import '../attendance/scan_face.dart';
 import 'package:camera/camera.dart';
 import '../storage.dart';
 import 'student_list.dart';
- 
+
 String username = '';
 String role = '';
 String email = '';
- 
+
 class TeacherDashBoard extends StatefulWidget {
   const TeacherDashBoard({Key? key}) : super(key: key);
- 
+
   @override
   State<TeacherDashBoard> createState() => _TeacherDashBoardState();
 }
- 
+
 class _TeacherDashBoardState extends State<TeacherDashBoard> {
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
       });
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +54,7 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                   builder: (context) => CaptureFace(
                     camera: frontCamera,
                     link:
-                        'http://172.31.54.122:8000/attendance/mark-attendance/',
+                        'http://IP_ADDRESS:8000/attendance/mark-attendance/',
                   ),
                 ),
               );
