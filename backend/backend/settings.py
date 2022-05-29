@@ -1,13 +1,13 @@
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-j=i9w*(0^%h$fq!8bd$+iwspcmni%%oo!amsfqi%w8+b^$*fvb'
+SECRET_KEY = config("DJANGO_SECRET")
+DEBUG = config("DEBUG", cast=bool, default=True)
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost','172.31.54.122']
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost','172.31.54.122', '.herokuapp.com']
 
 
 INSTALLED_APPS = [
