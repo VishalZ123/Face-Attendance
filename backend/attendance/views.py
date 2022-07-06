@@ -18,16 +18,16 @@ def get_attendance(request): # get username and send the attendance of the stude
     username = request.headers.get("username")
     print(username)
     if username is None:
-        return Response({'error': 'Please provide username'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Please provide username'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     
     user = CustomUser.objects.get(username=username)
     
     if not user:
-        return Response({'error': 'Invalid username'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Invalid username'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     try:
         attendance = Attendance.objects.filter(student=user)
         serializer = AttendanceSerializer(attendance, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response(serializer.data, status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
     except Exception as e:
         raise ValidationError({"400": f'{str(e)}'})
 
@@ -37,12 +37,12 @@ def get_attendance(request): # get username and send the attendance of the stude
 def submit_face(request): # submit face of the student
     token = request.headers.get("Token")
     if token is None:
-        return Response({'error': 'Please provide token'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Please provide token'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     user = Token.objects.get(key=token).user
 
     image = request.FILES.get("image")
     if image is None:
-        return Response({'error': 'Please provide image'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Please provide image'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     
     # face_recognition library can't detect horizontal faces
     # in case if the image is horizontal, rotate it
@@ -61,7 +61,7 @@ def submit_face(request): # submit face of the student
             face_locations = face_recognition.face_locations(loaded_img3)
             np_array = face_recognition.face_encodings(loaded_img3, face_locations)[0]
         else:
-            return Response({'error': 'No face found'}, status=HTTP_400_BAD_REQUEST)
+            return Response({'error': 'No face found'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
 
         # save face encoding in database in the form of bytes
         np_bytes = pickle.dumps(np_array)
@@ -69,10 +69,10 @@ def submit_face(request): # submit face of the student
         face = Faces.objects.save_face(student=user, face_encoding=face_encoding)
         face.save()
 
-        return Response({'message': 'Face submitted Succesfully!!'}, status=HTTP_200_OK)
+        return Response({'message': 'Face submitted Succesfully!!'}, status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
     except Exception as e:
         print('error')
-        return Response({'error': 'Something went wrong, please try again'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Something went wrong, please try again'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
         
 
 @api_view(['Post'])
@@ -80,7 +80,7 @@ def submit_face(request): # submit face of the student
 def mark_attendance(request):
     image = request.FILES.get("image")
     if image is None:
-        return Response({'error': 'Please provide image'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Please provide image'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     try:
         # get the image from the request
         loaded_img = face_recognition.load_image_file(image)
@@ -97,7 +97,7 @@ def mark_attendance(request):
             np_array = face_recognition.face_encodings(loaded_img3, face_locations)[0]
         else:
             # if there is no face in the image
-            return Response({'error': 'No face found'}, status=HTTP_400_BAD_REQUEST)
+            return Response({'error': 'No face found'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
 
         for face in Faces.objects.all(): # match the current face with all the known faces
             saved_encoding = face.face_encoding
@@ -108,7 +108,7 @@ def mark_attendance(request):
                     att = Attendance.objects.get(student=face.student)
                     if att.dateTime.date() == timezone.now().date():
                         # if attendance is already marked for today, then send message
-                        return Response({'error': 'Already Marked for Today', 'user':face.student.username}, status=HTTP_400_BAD_REQUEST)
+                        return Response({'error': 'Already Marked for Today', 'user':face.student.username}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
                 except Attendance.DoesNotExist:
                     pass
 
@@ -116,12 +116,12 @@ def mark_attendance(request):
                     attendance = Attendance.objects.create_attendance(student=face.student, dateTime=timezone.now(), is_present=True)
                     attendance.save()
                     # if attendance is successfully marked
-                    return Response({"message":"Attendance marked", "user":face.student.username},status=HTTP_200_OK)
+                    return Response({"message":"Attendance marked", "user":face.student.username},status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
                 except IntegrityError:
-                    return Response({'error': 'Error in marking attendance, please try again!!'}, status=HTTP_400_BAD_REQUEST)
-        return Response({'error': 'Faces does not match'}, status=HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Error in marking attendance, please try again!!'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
+        return Response({'error': 'Faces does not match'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
     except Exception as e:
-        return Response({'error': 'Something went wrong, please try again'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Something went wrong, please try again'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -129,6 +129,6 @@ def get_students(request): # send a list of all the student's username
     try:
         students = CustomUser.objects.all().filter(is_student=True)
         serializer = StudentSerializer(students, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response(serializer.data, status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
     except Exception as e:
-        return Response({'error': 'Something went wrong'}, status=HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Something went wrong'}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})

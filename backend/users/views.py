@@ -21,7 +21,7 @@ def create_user(request): # Create a new user
             if(CustomUser.objects.filter(username=serializer.validated_data['username']).exists()):
                 data['status'] = 'failed'
                 data['message'] = 'Username already exists'
-                return Response(data, status=HTTP_400_BAD_REQUEST)
+                return Response(data, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
             account = serializer.save()
             account.save()
             token = Token.objects.get_or_create(user=account)[0].key
@@ -30,11 +30,11 @@ def create_user(request): # Create a new user
             data["username"] = account.username
             data["token"] = token
             # Save the user and return the above info as response
-            return Response(data, status=HTTP_200_OK)
+            return Response(data, status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
         else:
             data = serializer.errors
             # return error message
-            return Response(data, status=HTTP_400_BAD_REQUEST)
+            return Response(data, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
   except IntegrityError as e:
         account=CustomUser.objects.get(username='')
         account.delete()
@@ -50,10 +50,10 @@ def get_user(request):
   try:
     Account = CustomUser.objects.get(email=email1) # get the account with the given email
   except BaseException as e:
-      return Response({"message": "No such email registered!!"}, status=HTTP_400_BAD_REQUEST)
+      return Response({"message": "No such email registered!!"}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
 
   if (password!=Account.password): # compare the passwords
-      return Response({"message": "Incorrect Login credentials"}, status=HTTP_400_BAD_REQUEST)
+      return Response({"message": "Incorrect Login credentials"}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
 
   # if the credentials are correct, return the token , role and username
   if Account:
@@ -67,7 +67,7 @@ def get_user(request):
       role = "Teacher"
     Res = {"data": data, "token": token, "role": role, "username": Account.username}
 
-    return Response(Res, content_type='application/json', status=HTTP_200_OK)
+    return Response(Res, content_type='application/json', status=HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
 
   else:
-      return Response({"message": "Incorrect Login credentials"}, status=HTTP_400_BAD_REQUEST)
+      return Response({"message": "Incorrect Login credentials"}, status=HTTP_400_BAD_REQUEST, headers={'Access-Control-Allow-Origin': '*'})
