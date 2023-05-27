@@ -77,7 +77,7 @@ class _StudentListState extends State<StudentList> {
     );
   }
 
-  String url = 'http://IP_ADDRESS:8000/attendance/get-students/';
+  String url = 'https://face-attendance-msengage.herokuapp.com/attendance/get-students/';
   Future getStudents() async {
     try {
       var response = await http.get(Uri.parse(url)); //  get the list of students

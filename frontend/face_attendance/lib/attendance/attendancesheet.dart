@@ -43,9 +43,9 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                       fontSize: 20,
                       color: Colors.black)),
               const SizedBox(height: 20),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   Text('Date',
                       style: TextStyle(
                         fontFamily: 'SignikaSemiBold',
@@ -112,7 +112,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
 
 Future fetchAttendance(String username) async {
   String url =
-      'http://IP_ADDRESS:8000/attendance/get-attendance/';
+      'https://face-attendance-msengage.herokuapp.com/attendance/get-attendance/';
   try {
     var response = await http.post(Uri.parse(url), headers: { // send username to server
       'username': username,

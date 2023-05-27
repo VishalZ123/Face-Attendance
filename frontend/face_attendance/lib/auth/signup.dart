@@ -46,7 +46,7 @@ class SignUpState extends State<Signup> {
                         color: Colors.grey[200],
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0)),
-                        child: Container(
+                        child: SizedBox(
                           width: 360.00,
                           height: 560.00,
                           child: Column(
@@ -308,8 +308,10 @@ class SignUpState extends State<Signup> {
                                           isSelected[0],
                                           isSelected[1],
                                           context);
-                                      if (statusOK) { // if signup is successful
-                                        if (isSelected[0]) { // if teacher
+                                      if (statusOK) {
+                                        // if signup is successful
+                                        if (isSelected[0]) {
+                                          // if teacher
                                           Navigator.pushNamed(
                                               context, '/login');
                                           ScaffoldMessenger.of(context)
@@ -320,7 +322,8 @@ class SignUpState extends State<Signup> {
                                                   color: Colors.green),
                                             ),
                                           ));
-                                        } else { // if student, need to submit photo of face
+                                        } else {
+                                          // if student, need to submit photo of face
                                           Navigator.pushNamed(
                                               context, '/submitface');
                                         }
@@ -352,25 +355,29 @@ class SignUpState extends State<Signup> {
   }
 }
 
-String url = 'http://IP_ADDRESS:8000/users/signup/';
+String url = 'https://face-attendance-msengage.herokuapp.com/users/signup/';
 // ignore: prefer_typing_uninitialized_variables
 var response;
 Future signup(username, email, password, teacher, student, context) async {
   try {
-    response = await http.post(Uri.parse(url), body: { // send the collected data for creating a new user
+    response = await http.post(Uri.parse(url), body: {
+      // send the collected data for creating a new user
       "username": username,
       "email": email,
       "password": password,
       "is_teacher": teacher.toString(),
       "is_student": student.toString()
     });
-    Map<String, dynamic> data = jsonDecode(response.body); // decode the response
+    Map<String, dynamic> data =
+        jsonDecode(response.body); // decode the response
     if (response.statusCode == 200) {
       String token = data["token"];
-      FlutterStorage.writeVal('token', token); // store the token in the flutter storage
+      FlutterStorage.writeVal(
+          'token', token); // store the token in the flutter storage
       return true;
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar( // show the error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        // show the error message
         content: Text(
           data['message'],
           style: const TextStyle(color: Colors.red),
@@ -380,10 +387,11 @@ Future signup(username, email, password, teacher, student, context) async {
     }
   } catch (e) {
     // when the user uses an already registered email or username
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
-        "Existing Username or Email.",
-        style: TextStyle(
+        // "Existing Username or Email.",
+        e.toString(),
+        style: const TextStyle(
           color: Colors.red,
           fontSize: 16,
         ),

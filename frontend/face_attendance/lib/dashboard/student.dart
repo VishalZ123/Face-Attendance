@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'side_panel.dart';
 import '../attendance/attendancesheet.dart';
 import '../storage.dart';
- 
+
 String username = '';
 String role = '';
 String email = '';
- 
+
 class StudentDashBoard extends StatefulWidget {
   const StudentDashBoard({Key? key}) : super(key: key);
- 
+
   @override
   State<StudentDashBoard> createState() => _StudentDashBoardState();
 }
- 
+
 class _StudentDashBoardState extends State<StudentDashBoard> {
   @override
   void initState() {
@@ -50,17 +50,18 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                               username: username,
                             )));
               },
-              child: Card( // View Attendance by clicking on the card
+              child: const Card(
+                // View Attendance by clicking on the card
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Material(
                         elevation: 2.0,
                         child: Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: EdgeInsets.all(20.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text("View Attendance",
                                     style: TextStyle(
                                         fontSize: 20,

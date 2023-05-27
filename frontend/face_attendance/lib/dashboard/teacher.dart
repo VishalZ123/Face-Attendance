@@ -54,22 +54,22 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                   builder: (context) => CaptureFace(
                     // Scan face to mark attendance
                     camera: frontCamera,
-                    link: 'http://IP_ADDRESS:8000/attendance/mark-attendance/',
+                    link: 'https://face-attendance-msengage.herokuapp.com/attendance/mark-attendance/',
                   ),
                 ),
               );
             },
-            child: Card(
+            child: const Card(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Material(
                       elevation: 2.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text("Mark Attendance",
                                   style: TextStyle(
                                       fontSize: 20,
@@ -95,17 +95,17 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                 ),
               );
             },
-            child: Card(
+            child: const Card(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Material(
                       elevation: 2.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text(
                                   "View Attendance", // View attendance of all students
                                   style: TextStyle(

@@ -82,6 +82,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             );
           } catch (e) {
             // If an error occurs, log the error to the console.
+            
             AlertDialog(
               content: Column(
                 children: [

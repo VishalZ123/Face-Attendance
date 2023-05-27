@@ -27,11 +27,11 @@ class _LoadingState extends State<Loading> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
-        child: Scaffold(
+        child: const Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Image(
                   image: AssetImage('assets/home_bg.png'),
                   height: 200,
