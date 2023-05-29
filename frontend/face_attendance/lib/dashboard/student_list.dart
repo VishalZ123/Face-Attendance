@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:face_attendance/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../attendance/attendancesheet.dart';
@@ -77,7 +78,7 @@ class _StudentListState extends State<StudentList> {
     );
   }
 
-  String url = 'https://face-attendance-msengage.herokuapp.com/attendance/get-students/';
+  String url = 'https://$BASE_URL/attendance/get-students/';
   Future getStudents() async {
     try {
       var response = await http.get(Uri.parse(url)); //  get the list of students

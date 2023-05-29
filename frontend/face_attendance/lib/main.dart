@@ -3,6 +3,7 @@ import 'package:face_attendance/loading.dart';
 import 'package:flutter/material.dart';
 import 'auth/login.dart';
 import 'auth/signup.dart';
+import 'constants.dart';
 import 'home.dart';
 import 'camera/photocapture.dart';
 import 'dashboard/student.dart';
@@ -22,8 +23,7 @@ void main() async {
       '/signup': (context) => const Signup(),
       '/submitface': (context) => TakePictureScreen(
             camera: frontCamera,
-            link:
-                'https://face-attendance-msengage.herokuapp.com/attendance/submit-face/',
+            link: 'https://$BASE_URL/attendance/submit-face/',
           ),
       '/student': (context) => const StudentDashBoard(),
       '/teacher': (context) => const TeacherDashBoard(),

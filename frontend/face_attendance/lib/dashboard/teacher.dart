@@ -1,3 +1,4 @@
+import 'package:face_attendance/constants.dart';
 import 'package:flutter/material.dart';
 import 'side_panel.dart';
 import '../attendance/scan_face.dart';
@@ -54,7 +55,7 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                   builder: (context) => CaptureFace(
                     // Scan face to mark attendance
                     camera: frontCamera,
-                    link: 'https://face-attendance-msengage.herokuapp.com/attendance/mark-attendance/',
+                    link: 'https://$BASE_URL/attendance/mark-attendance/',
                   ),
                 ),
               );

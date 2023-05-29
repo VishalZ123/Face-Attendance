@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:face_attendance/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -112,7 +113,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
 
 Future fetchAttendance(String username) async {
   String url =
-      'https://face-attendance-msengage.herokuapp.com/attendance/get-attendance/';
+      'https://$BASE_URL/attendance/get-attendance/';
   try {
     var response = await http.post(Uri.parse(url), headers: { // send username to server
       'username': username,
